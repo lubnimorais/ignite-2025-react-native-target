@@ -1,7 +1,11 @@
 import { View } from 'react-native';
 
+import { router } from 'expo-router';
+
 import { HomeHeader } from '@/components/HomeHeader';
 import { Target } from '@/components/Target';
+import { List } from '@/components/List';
+import { Button } from '@/components/Button';
 
 const summary = {
   total: 'R$ 2.680,00',
@@ -11,10 +15,18 @@ const summary = {
 
 const targets = [
   {
+    id: '1',
     name: 'Apple Watch',
     percentage: '50%',
     current: 'R$ 580,00',
     target: 'R$ 1.790,00',
+  },
+  {
+    id: '2',
+    name: 'Comprar uma cadeira ergonômica',
+    percentage: '75%',
+    current: 'R$ 900,00',
+    target: 'R$ 1.200,00',
   },
 ];
 
@@ -23,7 +35,23 @@ export default function Index() {
     <View style={{ flex: 1 }}>
       <HomeHeader data={summary} />
 
-      <Target data={targets[0]} />
+      <List
+        containerStyle={{ paddingHorizontal: 24 }}
+        title="Metas"
+        data={targets}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item: target }) => (
+          <Target
+            data={target}
+            onPress={() => router.navigate(`/in-progress/${target.id}`)}
+          />
+        )}
+        emptyMessage="Nenhuma meta. Toque em nova meta pra criar."
+      />
+
+      <View style={{ padding: 24, paddingBottom: 32 }}>
+        <Button title="Nova meta" onPress={() => router.navigate('/target')} />
+      </View>
     </View>
   );
 }

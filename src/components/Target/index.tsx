@@ -23,7 +23,7 @@ type IProps = TouchableOpacityProps & {
 
 export function Target({ data, ...rest }: IProps) {
   return (
-    <TouchableOpacity style={styles.container} {...rest}>
+    <TouchableOpacity style={styles.container} activeOpacity={0.7} {...rest}>
       <View style={styles.content}>
         <Text style={styles.name} numberOfLines={1}>
           {data.name}
