@@ -1,4 +1,4 @@
-package com.target
+package com.spaceteam42.target
 
 import android.os.Build
 import android.os.Bundle

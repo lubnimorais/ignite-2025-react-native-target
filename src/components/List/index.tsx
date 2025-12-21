@@ -9,8 +9,9 @@ import {
 
 import { colors } from '@/theme';
 
-import { styles } from './style';
 import { Separator } from '../Separator';
+
+import { styles } from './style';
 
 /** A FLATLIST INFERE O TIPO
  * BASEADO NO CONTEÚDO DA LISTA
@@ -18,10 +19,10 @@ import { Separator } from '../Separator';
  * TRABALHAREMOS COM GENERIC.
  * QUEM VAI DEFINIR O CONTEÚDO DA
  * LISTA, VAI SER ONDE FORMOS USAR
- * O COMPONENTE. SERÁ DEFINIDO DE FORMA
+ * O COMPONENTE. O TIPO SERÁ DEFINIDO DE FORMA
  * DINÂMICA.
  */
-type IProps<T> = FlatListProps<T> & {
+type IListProps<T> = FlatListProps<T> & {
   title: string;
   emptyMessage?: string;
   containerStyle?: StyleProp<ViewStyle>;
@@ -34,7 +35,7 @@ export function List<T>({
   data, // da FlatListProps
   renderItem, // da FlatListProps
   ...rest
-}: IProps<T>) {
+}: IListProps<T>) {
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={styles.title}>{title}</Text>
