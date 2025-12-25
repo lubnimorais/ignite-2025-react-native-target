@@ -19,7 +19,7 @@ export default function TargetScreen() {
           placeholder="Ex: Viagem para a praia, Apple Watch"
         />
 
-        <CurrencyInput label="Valor alvo" value={0} />
+        <CurrencyInput label="Valor alvo (R$)" value={0} />
 
         <Button title="Salvar" />
       </View>

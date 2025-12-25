@@ -15,13 +15,13 @@ type IProps = {
     name: keyof typeof MaterialIcons.glyphMap;
     color: ColorValue;
   };
-  isLeft?: boolean;
+  isRight?: boolean;
 };
 
-export function Summary({ data, icon, isLeft = false }: IProps) {
+export function Summary({ data, icon, isRight = false }: IProps) {
   return (
     <View style={styles.container}>
-      <View style={[styles.header, isLeft && { justifyContent: 'flex-end' }]}>
+      <View style={[styles.header, isRight && { justifyContent: 'flex-end' }]}>
         <MaterialIcons name={icon.name} color={icon.color} />
 
         <Text style={styles.label}>{data.label}</Text>
