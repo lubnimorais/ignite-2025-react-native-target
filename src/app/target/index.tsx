@@ -4,6 +4,8 @@ import { Alert, View } from 'react-native';
 
 import { router, useLocalSearchParams } from 'expo-router';
 
+import { useTargetDatabase } from '@/database/useTargetDatabase';
+
 import { PageHeader } from '@/components/PageHeader';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
@@ -16,8 +18,12 @@ export default function TargetScreen() {
 
   const params = useLocalSearchParams<{ id?: string }>();
 
+  const targetDatabase = useTargetDatabase();
+
   async function create() {
     try {
+      targetDatabase.create({ name, amount });
+
       Alert.alert('Nova Meta', 'Meta criada com sucesso!', [
         {
           text: 'Ok',

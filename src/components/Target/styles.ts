@@ -12,7 +12,6 @@ export const styles = StyleSheet.create({
     gap: 12,
 
     paddingVertical: 16,
-    paddingBottom: 16,
   },
 
   content: {
@@ -28,7 +27,7 @@ export const styles = StyleSheet.create({
 
   status: {
     fontFamily: fontFamily.regular,
-    fontSize: 10,
+    fontSize: 12,
     color: colors.gray[500],
   },
 });

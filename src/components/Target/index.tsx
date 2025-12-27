@@ -9,7 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { styles } from './styles';
 
-export type ITargetProps = {
+export type ITargetData = {
   id?: string;
   name: string;
   percentage: string;
@@ -17,11 +17,11 @@ export type ITargetProps = {
   target: string;
 };
 
-type IProps = TouchableOpacityProps & {
-  data: ITargetProps;
+type ITargetProps = TouchableOpacityProps & {
+  data: ITargetData;
 };
 
-export function Target({ data, ...rest }: IProps) {
+export function Target({ data, ...rest }: ITargetProps) {
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.7} {...rest}>
       <View style={styles.content}>
