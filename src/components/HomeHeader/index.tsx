@@ -9,17 +9,17 @@ import { styles } from './styles';
 import { Separator } from '../Separator';
 import { ISummaryProps, Summary } from '../Summary';
 
-export type IHomeHeaderProps = {
+export type IHomeHeaderData = {
   total: string;
   input: ISummaryProps;
   output: ISummaryProps;
 };
 
-type IProps = {
-  data: IHomeHeaderProps;
+type IHomeHeaderProps = {
+  data: IHomeHeaderData;
 };
 
-export function HomeHeader({ data }: IProps) {
+export function HomeHeader({ data }: IHomeHeaderProps) {
   return (
     <LinearGradient
       style={styles.container}

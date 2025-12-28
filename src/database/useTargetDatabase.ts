@@ -1,6 +1,6 @@
 import { useSQLiteContext } from 'expo-sqlite';
 
-type ITargetCreate = {
+export type ITargetCreate = {
   name: string;
   amount: number;
 };
@@ -13,6 +13,10 @@ export type ITargetResponse = {
   percentage: number;
   created_at: Date;
   updated_at: Date;
+};
+
+export type ITargetUpdate = ITargetCreate & {
+  id: number;
 };
 
 export function useTargetDatabase() {
@@ -34,7 +38,7 @@ export function useTargetDatabase() {
    * DEPOIS TER UMA TRANSAÇÃO, MAS PRECISAMOS RETORNAR ESSE VALOR ZERADO.
    * ENTÃO USAREMOS O COALESCE, SE NÃO ENCONTRAR VAI RETORNAR 0.
    */
-  async function listBySavedValue(): Promise<ITargetResponse[]> {
+  async function listByClosestTarget(): Promise<ITargetResponse[]> {
     return database.getAllAsync<ITargetResponse>(`
       SELECT
         targets.id,
@@ -48,7 +52,7 @@ export function useTargetDatabase() {
         targets
       LEFT JOIN transactions ON targets.id = transactions.target_id
       GROUP BY targets.id, targets.name, targets.amount
-      ORDER BY current DESC
+      ORDER BY percentage DESC
     `);
   }
 
@@ -69,5 +73,24 @@ export function useTargetDatabase() {
     `);
   }
 
-  return { create, listBySavedValue, show };
+  async function update(data: ITargetUpdate) {
+    const statement = await database.prepareAsync(`
+      UPDATE targets SET
+        name = $name,
+        amount = $amount,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $id`);
+
+    await statement.executeAsync({
+      $id: data.id,
+      $name: data.name,
+      $amount: data.amount,
+    });
+  }
+
+  async function remove(id: number) {
+    await database.runAsync('DELETE FROM targets WHERE id = ?', id);
+  }
+
+  return { create, listByClosestTarget, show, update, remove };
 }

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Alert, View } from 'react-native';
+import { Alert, StatusBar, View } from 'react-native';
 
 import { router, useLocalSearchParams } from 'expo-router';
 
@@ -37,6 +37,70 @@ export default function TargetScreen() {
     }
   }
 
+  async function fetchDetails(id: number) {
+    try {
+      const response = await targetDatabase.show(id);
+
+      setName(response.name);
+      setAmount(response.amount);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível carregar os detalhes da meta.');
+      console.log(error);
+    }
+  }
+
+  async function update() {
+    try {
+      await targetDatabase.update({ id: Number(params.id), name, amount });
+
+      Alert.alert('Sucesso', 'Meta atualizada com sucesso!', [
+        {
+          text: 'Ok',
+          onPress: () => router.back(),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível atualizar a meta.');
+      console.log(error);
+      setIsProcessing(false);
+    }
+  }
+
+  async function remove() {
+    try {
+      setIsProcessing(true);
+
+      await targetDatabase.remove(Number(params.id));
+
+      Alert.alert('Meta', 'Meta removida!', [
+        {
+          text: 'Ok',
+          onPress: () => router.replace('/'),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível remover a meta.');
+      console.log(error);
+    }
+  }
+
+  function handleRemove() {
+    if (!params.id) {
+      return;
+    }
+
+    Alert.alert('Remover', 'Deseja realmente remover?', [
+      {
+        text: 'Não',
+        style: 'cancel',
+      },
+      {
+        text: 'Sim',
+        onPress: async () => await remove(),
+      },
+    ]);
+  }
+
   async function handleSave() {
     if (!name.trim() || amount <= 0) {
       return Alert.alert(
@@ -48,17 +112,28 @@ export default function TargetScreen() {
     setIsProcessing(true);
 
     if (params.id) {
-      // update
+      update();
     } else {
       create();
     }
   }
 
+  useEffect(() => {
+    if (params.id) {
+      fetchDetails(Number(params.id));
+    }
+  }, [params.id]);
+
   return (
     <View style={{ flex: 1, padding: 24 }}>
+      <StatusBar barStyle="dark-content" translucent />
+
       <PageHeader
         title="Meta"
         subtitle="Economize para alcançar sua meta financeira"
+        rightButton={
+          params.id ? { icon: 'delete', onPress: handleRemove } : undefined
+        }
       />
 
       <View style={{ marginTop: 32, gap: 24 }}>
